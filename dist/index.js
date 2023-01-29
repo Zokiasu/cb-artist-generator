@@ -19,28 +19,6 @@ const db = require("../javascript/db");
 const ytm = new ytmusic_api_1.default();
 let artistList = [];
 let releaseList = [];
-// console.log(process.argv)
-// process.argv.shift()  // skip node.exe
-// process.argv.shift()  // skip name of js file
-// let entry = process.argv.join(" ")
-// ytm.initialize().then(async () => {
-//   artistList = await getArtistFromFirebase()
-//   releaseList = await getReleasesFromFirebase()
-//   // await verifyArtist('UC9oomNHPNLrh819sxCgcYTA')
-//   if(entry) {
-//     entry = entry.replace(/[$^]/g, "")
-//     console.log('Entry', entry)
-//     newArtist(entry)
-//   } else {
-//     for (let index = artistList.length-1; index >= 0; index--) {
-//       if(artistList[index].idYoutubeMusic) {
-//         setTimeout(async () => {
-//           await verifyArtist(artistList[index].idYoutubeMusic)
-//         }, index * 1000);  // attendre 1 seconde avant chaque itération
-//       }
-//     }
-//   }
-// });
 const readline = require('readline');
 const rl = readline.createInterface({
     input: process.stdin,
@@ -48,16 +26,15 @@ const rl = readline.createInterface({
 });
 rl.question('What is the name of the artist? ', (entry) => {
     console.log(`You entered: ${entry}`);
-    // code restant de votre script ici
     ytm.initialize().then(() => __awaiter(void 0, void 0, void 0, function* () {
         artistList = yield getArtistFromFirebase();
         releaseList = yield getReleasesFromFirebase();
-        // await verifyArtist('UC9oomNHPNLrh819sxCgcYTA')
+        // si l'utilisateur entre un nom d'artiste lancer la recherche d'artiste
         if (entry) {
-            entry = entry.replace(/[$^]/g, "");
             console.log('Entry', entry);
             newArtist(entry);
         }
+        // sinon lancer l'actualisation des nouvelles releases des artistes existant
         else {
             for (let index = artistList.length - 1; index >= 0; index--) {
                 if (artistList[index].idYoutubeMusic) {
